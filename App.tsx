@@ -4,6 +4,7 @@ import { NativeBaseProvider } from 'native-base';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 
 import { Routes } from '@routes/index';
+import { Home } from '@screens/Home';
 
 import { Loading } from '@components/Loading';
 
@@ -22,7 +23,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Routes /> : <Loading/>} 
+      {fontsLoaded ? <Home /> : <Loading/>} 
 
     </NativeBaseProvider>
   );
