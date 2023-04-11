@@ -32,9 +32,6 @@ export function HomeHeader() {
           size={7}
         />
       </TouchableOpacity>
-
-        
-
     </HStack>
   )
 }
