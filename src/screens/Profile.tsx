@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
-import { ScrollView, VStack, Center, Skeleton, Text, Heading } from "native-base";
+import { Alert, TouchableOpacity } from "react-native";
+import { ScrollView, VStack, Center, Skeleton, Text, Heading, useToast } from "native-base";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+
+import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 
 const PHOTO_SIZE = 33;
@@ -14,20 +16,47 @@ export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState('https://github.com/dev-lucccaslp.png');
 
-  async function handleUserPhotoSelect(){
-    const photoSelected = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-      aspect: [4, 4],
-      allowsEditing: true,
-      base64:true,
-    });
+  const toast = useToast();
 
-    if(photoSelected.canceled){
-      return;
+  async function handleUserPhotoSelect(){
+    setPhotoIsLoading(true);
+
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+        base64:true,
+      });
+  
+      if(photoSelected.canceled){
+        return;
+      }
+      
+      if (photoSelected.assets[0].uri) {
+
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+
+        if(photoInfo.size && (photoInfo.size / 1024 /1024) > 5) {
+          return toast.show({
+            title:"Essa imagem é muito grande. Escolha uma até 5MB.",
+            placement:'top',
+            bgColor: 'red.500'
+          })
+        }
+        console.log(photoInfo)
+
+        setUserPhoto(photoSelected.assets[0].uri)
+      }
+
+    } catch(error) {
+      console.log(error);
+    } finally {
+      setPhotoIsLoading(false);
     }
 
-    setUserPhoto(photoSelected.assets[0].uri)
+
   } 
 
   return (
