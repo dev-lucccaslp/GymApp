@@ -22,7 +22,7 @@ export function Exercise() {
   return (
     <VStack flex={1}>
     
-        <VStack px={8} pt={12} bg='gray.600'>
+      <VStack px={8} pt={12} bg='gray.600'>
           <TouchableOpacity onPress={handleGoBack}>
             <Icon as={Feather} name="arrow-left" color='green.500' size={6}/>
           </TouchableOpacity>
@@ -38,9 +38,9 @@ export function Exercise() {
               </Text>
             </HStack>
           </HStack>
-        </VStack>
+      </VStack>
 
-        <ScrollView>
+      <ScrollView>
         <VStack p={8}>
           <Image 
             w={'full'}
@@ -72,9 +72,7 @@ export function Exercise() {
             <Button 
               title="Marcar como realizado"
             />
-          </Box>
-          
-          
+          </Box>   
         </VStack>
       </ScrollView>
     </VStack>
