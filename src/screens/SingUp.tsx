@@ -138,7 +138,7 @@ export function SignUp() {
             title='Voltar para o login' 
             variant="outline"
             onPress={handleNavigation}
-            mt={24}
+            mt={16}
           />
 
       </VStack>
