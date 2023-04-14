@@ -35,8 +35,24 @@ export function SignUp() {
     navigation.goBack();
   }
 
-  function handleSignUp({email, name, password, password_confirm}: FormaDataProps) {
-    console.log({email, name, password, password_confirm})
+  function handleSignUp({email, name, password}: FormaDataProps) {
+    try {
+    
+    fetch('http://192.168.11.200:3333/users', {
+      method: 'POST',
+      headers: {
+        'Accept': 'aplication/json',
+        'Content-Type': 'aplication/json',
+      },
+      body: JSON.stringify({ name, email, password })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
