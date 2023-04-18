@@ -35,14 +35,15 @@ export function SignUp() {
     navigation.goBack();
   }
 
-  function handleSignUp({email, name, password}: FormaDataProps) {
+  function handleSignUp({name, email, password}: FormaDataProps) {
+    console.log({name, email, password})
     try {
     
     fetch('http://192.168.11.200:3333/users', {
       method: 'POST',
       headers: {
-        'Accept': 'aplication/json',
-        'Content-Type': 'aplication/json',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name, email, password })
     })
@@ -141,8 +142,6 @@ export function SignUp() {
             />
             )}
           />
-
-
 
           <Button 
             title='Criar e acessar'
