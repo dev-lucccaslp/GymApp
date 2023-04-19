@@ -5,6 +5,8 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/
 
 import { Routes } from '@routes/index';
 
+import { AuthContex } from '@contexts/AuthContext';
+
 import { Loading } from '@components/Loading';
 
 import { THEME } from './src/theme';
@@ -22,8 +24,14 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Routes /> : <Loading/>} 
-
+      <AuthContex.Provider value={{
+        id:'1',
+        nome:'Lucas',
+        email:'teste@teste.com',
+        avatar: 'lucas.png'
+      }}>
+        {fontsLoaded ? <Routes  /> : <Loading/>} 
+      </AuthContex.Provider>
     </NativeBaseProvider>
   );
 }
