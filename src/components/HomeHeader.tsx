@@ -6,6 +6,8 @@ import { UserPhoto } from "./UserPhoto";
 
 import { useAuth } from "@hooks/useAuth";
 
+import defaultUserProfile from '@assets/userPhotoDefault.png'
+
 export function HomeHeader() {
   const { user } = useAuth()
   
@@ -14,7 +16,7 @@ export function HomeHeader() {
       <UserPhoto 
         size={16}
         alt="Imagem do usuário"
-        source={{uri: 'https://github.com/dev-lucccaslp.png'}}
+        source={user.avatar? { uri: user.avatar } : defaultUserProfile }
         mr={4}
       />
       
