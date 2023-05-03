@@ -31,7 +31,7 @@ export function Exercise() {
   const toast = useToast();
 
   const { exerciseId } = route.params as RoutesParamsProps;
-  console.log('id =>',exerciseId)
+ 
 
   function handleGoBack(){
     navigation.goBack();
