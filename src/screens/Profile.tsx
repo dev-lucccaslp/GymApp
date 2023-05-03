@@ -189,6 +189,7 @@ export function Profile() {
                 bg='gray.600'
                 placeholder="Confirme a nova senha"
                 secureTextEntry
+                onChangeText={onChange}
                 errorMessage={errors.confirm_password?.message}
               />
             )}
