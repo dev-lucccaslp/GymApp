@@ -1,22 +1,42 @@
 import { useState } from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { ScrollView, VStack, Center, Skeleton, Text, Heading, useToast } from "native-base";
+import { Controller , useForm } from 'react-hook-form';
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+import { useAuth } from "@hooks/useAuth";
+
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 
 const PHOTO_SIZE = 33;
+
+type FormDataProps = {
+  name: string;
+  email:string;
+  password:string;
+  old_password: string;
+  confirm_password:string;
+}
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState('https://github.com/dev-lucccaslp.png');
 
   const toast = useToast();
+  const { user } = useAuth();
+
+  console.log(user)
+  const { control } = useForm<FormDataProps>({
+    defaultValues: {
+      name: user.name,
+      email: user.email,
+    }
+  });
 
   async function handleUserPhotoSelect(){
     setPhotoIsLoading(true);
@@ -88,15 +108,32 @@ export function Profile() {
           </Text>
         </TouchableOpacity>
 
-        <Input 
-          placeholder="Nome"
-          bg='gray.600'
+        <Controller
+          control={control}
+          name="name"
+          render={({field: { value, onChange }}) => (
+            <Input 
+              placeholder="Nome"
+              bg='gray.600'
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
         />
-        <Input 
-          bg='gray.600'
-          placeholder="E-mail"
-          isDisabled
+        <Controller
+          control={control}
+          name="email"
+          render={({field: { value, onChange }}) => (
+            <Input 
+              bg='gray.600'
+              placeholder="E-mail"
+              isDisabled
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
         />
+
         </Center>
 
         <VStack px={10} mt={12} mb={9}>
