@@ -83,7 +83,6 @@ export function Profile() {
       }
       
       if (photoSelected.assets[0].uri) {
-
         const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
 
         if (photoInfo.exists && photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
@@ -93,9 +92,28 @@ export function Profile() {
             bgColor: 'red.500'
           })
         } 
-        console.log(photoInfo)
+        
+        const fileExtension = photoSelected.assets[0].uri.split('.').pop();
 
-        setUserPhoto(photoSelected.assets[0].uri)
+        const photoFile = {
+          name: `${user.name}.${fileExtension}`.toLowerCase(),
+          uri: photoSelected.assets[0].uri,
+          type: `${photoSelected.assets[0].type}/${fileExtension}`
+        }as any;
+
+        const userPhotoUploadForm = new FormData();
+        userPhotoUploadForm.append('avatar', photoFile);
+        
+        await api.patch('/users/avatar', userPhotoUploadForm, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        toast.show({
+          title:'Foto atualizda!',
+          placement: 'top',
+          bgColor: 'green.500'
+        });
       }
 
     } catch(error) {
