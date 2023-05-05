@@ -12,6 +12,8 @@ import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
 import { useAuth } from "@hooks/useAuth";
 
+import defaultUserProfile from '@assets/userPhotoDefault.png'
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
@@ -53,7 +55,6 @@ const profileSchema = yup.object({
 export function Profile() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
-  const [userPhoto, setUserPhoto] = useState('https://github.com/dev-lucccaslp.png');
 
   const toast = useToast();
   const { user, updateUserProfile } = useAuth();
@@ -104,11 +105,16 @@ export function Profile() {
         const userPhotoUploadForm = new FormData();
         userPhotoUploadForm.append('avatar', photoFile);
         
-        await api.patch('/users/avatar', userPhotoUploadForm, {
+        const avatarUpdatedResponse = await api.patch('/users/avatar', userPhotoUploadForm, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
+
+        const userUpdated = user;
+        userUpdated.avatar = avatarUpdatedResponse.data.avatar;
+        updateUserProfile(userUpdated);
+
         toast.show({
           title:'Foto atualizda!',
           placement: 'top',
@@ -173,7 +179,7 @@ export function Profile() {
             />
             :
             <UserPhoto
-              source={{uri: userPhoto}}
+              source={user.avatar? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}`} : defaultUserProfile }
               alt="Foto do usuário"
               size={PHOTO_SIZE}
             />        
