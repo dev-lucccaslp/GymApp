@@ -17,6 +17,7 @@ api.registerInterceptTokenManager = signOut => {
       if(requestError.response.data?.message === 'token.expired' || requestError.response.data?.message === 'token.invalid') {
 
       }
+      
       signOut();
     }
 
